@@ -13,7 +13,9 @@ from olden_era.models.rmg import RMG
 from olden_era.models.road import Road, RoadJunction
 from olden_era.zone_builder import ZoneBuilder
 
-TEMPLATE_PATH = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Heroes of Might and Magic Olden Era\HeroesOldenEra_Data\StreamingAssets\map_templates")
+TEMPLATE_PATH = Path(
+    r"C:\Program Files (x86)\Steam\steamapps\common\Heroes of Might and Magic Olden Era\HeroesOldenEra_Data\StreamingAssets\map_templates"
+)
 SYMPHONY_PATH = TEMPLATE_PATH / "Symphony.rmg.json"
 
 with open(SYMPHONY_PATH, "r") as f:
@@ -40,20 +42,57 @@ supertreasure_builder = ZoneBuilder(supertreasure_template)
 supertreasure = supertreasure_builder.remove_cities().remove_roads().set_name("SupertreasureMid").build()
 zones[supertreasure.name] = supertreasure
 
-spawn_side_template = Connection(name="", start="", end="", connectionType="Direct", road=True, simTurnSquad=True, guardValue=3000, guardWeeklyIncrement=0.20)
+spawn_side_template = Connection(
+    name="",
+    start="",
+    end="",
+    connectionType="Direct",
+    road=True,
+    simTurnSquad=True,
+    guardValue=3000,
+    guardWeeklyIncrement=0.20,
+)
 side_treasure_template = Connection(
-    name="", start="", end="", connectionType="Direct", road=True, simTurnSquad=True, guardValue=9000, guardWeeklyIncrement=0.20
+    name="",
+    start="",
+    end="",
+    connectionType="Direct",
+    road=True,
+    simTurnSquad=True,
+    guardValue=9000,
+    guardWeeklyIncrement=0.20,
 )
 treasure_supertreasure_template = Connection(
-    name="", start="", end="", connectionType="Direct", road=True, simTurnSquad=True, guardValue=18000, guardWeeklyIncrement=0.20
+    name="",
+    start="",
+    end="",
+    connectionType="Direct",
+    road=True,
+    simTurnSquad=True,
+    guardValue=18000,
+    guardWeeklyIncrement=0.20,
 )
 spawn_supertreasure_template = Connection(
-    name="", start="", end="", connectionType="Direct", road=True, simTurnSquad=True, guardValue=48000, guardWeeklyIncrement=0.10
+    name="",
+    start="",
+    end="",
+    connectionType="Direct",
+    road=True,
+    simTurnSquad=True,
+    guardValue=48000,
+    guardWeeklyIncrement=0.10,
 )
 
 player_indices = list(range(1, 4))
 for player_idx in player_indices:
-    spawn = ZoneBuilder(spawn_template).set_ownership(player_idx).remove_cities().set_name(f"Spawn{player_idx}").remove_roads().build()
+    spawn = (
+        ZoneBuilder(spawn_template)
+        .set_ownership(player_idx)
+        .remove_cities()
+        .set_name(f"Spawn{player_idx}")
+        .remove_roads()
+        .build()
+    )
     match_biome = BiomeRules(type="MatchZone", args=[spawn.name])
     city = MainObject(
         type="City",
@@ -66,10 +105,27 @@ for player_idx in player_indices:
         buildingsConstructionSid="poor_buildings_construction",
         placement="Center",
     )
-    side = ZoneBuilder(side_template).remove_cities().set_name(f"Side{player_idx}").remove_roads().set_biomes(match_biome).add_main_objects(city).build()
+    side = (
+        ZoneBuilder(side_template)
+        .remove_cities()
+        .set_name(f"Side{player_idx}")
+        .remove_roads()
+        .set_biomes(match_biome)
+        .add_main_objects(city)
+        .build()
+    )
     nonmatch_biome_rule = f"differentFrom: Spawn{player_idx}"
-    nonmatch_biome = BiomeRules(type="FromList", args=["Grass", "Deathland", "Snow", "Autumn", "Lava", "Dirt", nonmatch_biome_rule])
-    treasure = ZoneBuilder(treasure_template).remove_cities().remove_roads().set_name(f"Treasure{player_idx}").set_biomes(nonmatch_biome).build()
+    nonmatch_biome = BiomeRules(
+        type="FromList", args=["Grass", "Deathland", "Snow", "Autumn", "Lava", "Dirt", nonmatch_biome_rule]
+    )
+    treasure = (
+        ZoneBuilder(treasure_template)
+        .remove_cities()
+        .remove_roads()
+        .set_name(f"Treasure{player_idx}")
+        .set_biomes(nonmatch_biome)
+        .build()
+    )
     zones[spawn.name] = spawn
     zones[side.name] = side
     zones[treasure.name] = treasure
@@ -78,11 +134,19 @@ for player_idx in player_indices:
     connections.append(connection_spawn_side)
     connection_side_treasure = ConnectionBuilder(side_treasure_template).from_to(side, treasure).build()
     connections.append(connection_side_treasure)
-    connection_treasure_supertreasure = ConnectionBuilder(treasure_supertreasure_template).from_to(treasure, supertreasure).build()
+    connection_treasure_supertreasure = (
+        ConnectionBuilder(treasure_supertreasure_template).from_to(treasure, supertreasure).build()
+    )
     connections.append(connection_treasure_supertreasure)
 
 for p1, p2 in combinations(player_indices, 2):
-    supertreasure_side = ZoneBuilder(supertreasure_template).remove_cities().remove_roads().set_name(f"SupertreasureSide{p1}{p2}").build()
+    supertreasure_side = (
+        ZoneBuilder(supertreasure_template)
+        .remove_cities()
+        .remove_roads()
+        .set_name(f"SupertreasureSide{p1}{p2}")
+        .build()
+    )
     zones[supertreasure_side.name] = supertreasure_side
 
     spawn_p1 = zones[f"Spawn{p1}"]
@@ -107,19 +171,42 @@ for zone_name, connection_list in zone_to_connection_list.items():
     if len(zone.mainObjects) > 0:
         for connection in connection_list:
             zone.roads.append(
-                Road(type="Stone", start=RoadJunction(type="MainObject", args=["0"]), end=RoadJunction(type="Connection", args=[connection.name]))
+                Road(
+                    type="Stone",
+                    start=RoadJunction(type="MainObject", args=["0"]),
+                    end=RoadJunction(type="Connection", args=[connection.name]),
+                )
             )
         for idx in range(1, len(zone.mainObjects)):
-            zone.roads.append(Road(type="Stone", start=RoadJunction(type="MainObject", args=["0"]), end=RoadJunction(type="MainObject", args=[f"{idx}"])))
+            zone.roads.append(
+                Road(
+                    type="Stone",
+                    start=RoadJunction(type="MainObject", args=["0"]),
+                    end=RoadJunction(type="MainObject", args=[f"{idx}"]),
+                )
+            )
     else:
         for c1, c2 in combinations(connection_list, 2):
-            zone.roads.append(Road(type="Stone", start=RoadJunction(type="Connection", args=[c1.name]), end=RoadJunction(type="Connection", args=[c2.name])))
+            zone.roads.append(
+                Road(
+                    type="Stone",
+                    start=RoadJunction(type="Connection", args=[c1.name]),
+                    end=RoadJunction(type="Connection", args=[c2.name]),
+                )
+            )
 rmg_copy = rmg.model_copy(deep=True)
 rmg_copy.variants[0].zones = list(zones.values())
 rmg_copy.variants[0].connections = connections
 rmg_copy.name = "Test1"
 rmg_copy.description = "Test1"
-orientation = Orientation(zeroAngleZone="Spawn1", mode="MinimalBoundingSquare", baseAngleMin=120, baseAngleMax=120, randomAngleAmplitude=0, randomAngleStep=120)
+orientation = Orientation(
+    zeroAngleZone="Spawn1",
+    mode="MinimalBoundingSquare",
+    baseAngleMin=120,
+    baseAngleMax=120,
+    randomAngleAmplitude=0,
+    randomAngleStep=120,
+)
 rmg_copy.variants[0].orientation = orientation
 rmg_copy.sizeX = 128
 rmg_copy.sizeZ = 128
