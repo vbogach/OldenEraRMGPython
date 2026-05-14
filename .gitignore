@@ -1,0 +1,6 @@
+*.egg-info
+.venv
+*.graphml
+.idea
+ignore
+__pycache__
