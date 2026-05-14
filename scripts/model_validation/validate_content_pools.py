@@ -6,8 +6,6 @@ from loguru import logger
 from olden_era.models.content_pool import ContentPool
 
 
-
-
 def main():
     data_root = Path(r"C:\Users\vbogach\Documents\olden_era\data\content_pools")
     json_paths = list(data_root.rglob("*.json"))
@@ -23,7 +21,6 @@ def main():
                 # logger.info(f"Validated {validated.name}")
             except Exception as e:
                 logger.error(e)
-
 
 
 if __name__ == "__main__":

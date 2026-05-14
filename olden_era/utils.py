@@ -7,8 +7,10 @@ def strip_roads(zone: Zone):
     zone_copy.roads = []
     return zone_copy
 
+
 def find_spawn(zone: Zone) -> MainObject:
     return next(candidate for candidate in zone.mainObjects if candidate.type == "Spawn")
+
 
 def replace_ownership(zone: Zone, player_idx: int) -> Zone:
     zone_copy = zone.model_copy(deep=True)
@@ -19,6 +21,7 @@ def replace_ownership(zone: Zone, player_idx: int) -> Zone:
         if main_object.owner is not None:
             main_object.owner = f"Player{player_idx}"
     return zone_copy
+
 
 def remove_cities(zone: Zone) -> Zone:
     zone_copy = zone.model_copy(deep=True)

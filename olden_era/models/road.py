@@ -10,5 +10,5 @@ class RoadJunction(Base):
 
 class Road(Base):
     start: RoadJunction = Field(validation_alias="from", serialization_alias="from")
-    end: RoadJunction =  Field(validation_alias="to", serialization_alias="to")
+    end: RoadJunction = Field(validation_alias="to", serialization_alias="to")
     type: str | None = None

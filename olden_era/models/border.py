@@ -5,6 +5,7 @@ class BorderNoise(Base):
     amp: float
     freq: float
 
+
 class Border(Base):
     cornerRadius: float
     obstaclesWidth: int

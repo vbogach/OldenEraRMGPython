@@ -4,9 +4,6 @@ from pathlib import Path
 from loguru import logger
 
 from olden_era.models.content_list import ContentList
-from olden_era.models.content_pool import ContentPool
-
-
 
 
 def main():
@@ -24,7 +21,6 @@ def main():
                 # logger.info(f"Validated {validated.name}")
             except Exception as e:
                 logger.error(e)
-
 
 
 if __name__ == "__main__":

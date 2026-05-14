@@ -6,6 +6,7 @@ class Limit(Identifiable):
     maxCount: int
     content: list[Identifiable] | None = None
 
+
 class ContentCountLimits(Base):
     name: str
     limits: list[Limit] | None = None
